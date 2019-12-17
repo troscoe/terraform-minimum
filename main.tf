@@ -29,7 +29,7 @@ data "terraform_remote_state" "dev" {
   backend = "remote"
   workspace = "dev"
   config = {
-    organization = "nicktech"
+    organization = "ftnt"
     workspaces = {
       # name = "minimum-dev"
       prefix = "minimum-"
