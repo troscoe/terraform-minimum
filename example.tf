@@ -31,6 +31,9 @@ resource "aws_instance" "example" {
   instance_type   = "t2.micro"
   key_name      = "${aws_key_pair.generated_key.key_name}"
   vpc_security_group_ids = ["${aws_security_group.port_22_ingress_globally_accessible.id}"]
+  provisioner "local-exec" {
+    command = "yum -y install ansible"
+  }
   provisioner "remote-exec" {
                 inline = ["sudo hostname"]
 
@@ -39,12 +42,9 @@ resource "aws_instance" "example" {
                         type        = "ssh"
                         user        = "ec2-user"
                         private_key = "${tls_private_key.example.private_key_pem}"
-                }
-        }  
+    }
+  }
   provisioner "local-exec" {
-    command = <<EOH
-sudo yum -y install ansible
-ansible-playbook -i \"self.public_ip,\" --private-key ${tls_private_key.example.private_key_pem} httpd.yml"
-EOH
+    command = "ansible-playbook -i \"${self.public_ip},\" --private-key ${tls_private_key.example.private_key_pem} httpd.yml"
   }
 }
