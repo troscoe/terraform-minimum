@@ -15,10 +15,22 @@ resource "aws_key_pair" "generated_key" {
   public_key = "${tls_private_key.example.public_key_openssh}"
 }
 
+resource "aws_security_group" "port_22_ingress_globally_accessible" {
+    name = "port_22_ingress_globally_accessible"
+
+    ingress { 
+        from_port = 22    
+        to_port = 22
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+}
+
 resource "aws_instance" "example" {
   ami             = "ami-00068cd7555f543d5"
   instance_type   = "t2.micro"
   key_name      = "${aws_key_pair.generated_key.key_name}"
+  security_groups = ["${aws_security_group.port_22_ingress_globally_accessible}"]
   provisioner "remote-exec" {
                 inline = ["sudo hostname"]
 
