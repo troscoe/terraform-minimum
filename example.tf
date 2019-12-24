@@ -26,7 +26,7 @@ resource "aws_instance" "example" {
                         host = self.public_ip
                         type        = "ssh"
                         user        = "ec2-user"
-                        private_key = "${aws_key_pair.generated_key.private_key_openssh}"
+                        private_key = "~/.ssh/id_dsa"
                 }
         }  
 }
