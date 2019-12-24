@@ -11,12 +11,12 @@ resource "tls_private_key" "example" {
 }
 
 resource "aws_key_pair" "generated_key" {
-  key_name   = "${var.key_name}"
-  public_key = "${tls_private_key.example.public_key_openssh}"
+  key_name   = "var.key_name"
+  public_key = "tls_private_key.example.public_key_openssh"
 }
 
 resource "aws_instance" "example" {
   ami             = "ami-00068cd7555f543d5"
   instance_type   = "t2.micro"
-  key_name      = "${aws_key_pair.generated_key.key_name}"
+  key_name      = "aws_key_pair.generated_key.key_name"
 }
