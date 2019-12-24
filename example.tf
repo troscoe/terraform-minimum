@@ -41,4 +41,10 @@ resource "aws_instance" "example" {
                         private_key = "${tls_private_key.example.private_key_pem}"
                 }
         }  
+  provisioner "local-exec" {
+    command = <<EOH
+sudo yum -y install ansible
+ansible-playbook -i \"self.public_ip,\" --private-key ${tls_private_key.example.private_key_pem} httpd.yml"
+EOH
+  }
 }
