@@ -26,7 +26,7 @@ resource "aws_instance" "example" {
                         host = self.public_ip
                         type        = "ssh"
                         user        = "ec2-user"
-                        private_key = "${tls_private_key.example}"
+                        private_key = "${tls_private_key.example.private_key_pem}"
                 }
         }  
 }
