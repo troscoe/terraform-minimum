@@ -30,7 +30,7 @@ resource "aws_instance" "example" {
   ami             = "ami-00068cd7555f543d5"
   instance_type   = "t2.micro"
   key_name      = "${aws_key_pair.generated_key.key_name}"
-  security_groups = "${aws_security_group.port_22_ingress_globally_accessible.name}"
+  security_groups = "${aws_security_group.port_22_ingress_globally_accessible.id}"
   provisioner "remote-exec" {
                 inline = ["sudo hostname"]
 
