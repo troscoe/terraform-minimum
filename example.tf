@@ -12,7 +12,7 @@ resource "tls_private_key" "example" {
 
 resource "aws_key_pair" "generated_key" {
   key_name   = "var.key_name"
-  public_key = "${tls_private_key.example.public_key_openssh}"
+  public_key = "tls_private_key.example.public_key_openssh"
 }
 
 resource "aws_instance" "example" {
@@ -26,7 +26,7 @@ resource "aws_instance" "example" {
                         host = self.public_ip
                         type        = "ssh"
                         user        = "ec2-user"
-                        private_key = "${aws_key_pair.generated_key.key_name}"
+                        private_key = "${aws_key_pair.generated_key.private_key}"
                 }
         }  
 }
