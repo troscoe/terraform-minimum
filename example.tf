@@ -32,7 +32,7 @@ resource "aws_instance" "example" {
   key_name      = "${aws_key_pair.generated_key.key_name}"
   vpc_security_group_ids = ["${aws_security_group.port_22_ingress_globally_accessible.id}"]
   provisioner "local-exec" {
-    command = "yum -y install ansible"
+    command = "packer"
   }
   provisioner "remote-exec" {
                 inline = ["sudo hostname"]
@@ -45,6 +45,6 @@ resource "aws_instance" "example" {
     }
   }
   provisioner "local-exec" {
-    command = "ansible-playbook -i \"${self.public_ip},\" --private-key ${tls_private_key.example.private_key_pem} httpd.yml"
+    command = "ansible all -m ping --ask-pass"
   }
 }
