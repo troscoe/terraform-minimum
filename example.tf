@@ -19,4 +19,13 @@ resource "aws_instance" "example" {
   ami             = "ami-00068cd7555f543d5"
   instance_type   = "t2.micro"
   key_name      = "${aws_key_pair.generated_key.key_name}"
+  provisioner "remote-exec" {
+    inline = ["echo 'Hello World'"]
+
+    connection {
+      type        = "ssh"
+      user        = "ec2-user"
+      private_key = "${aws_key_pair.generated_key}"
+    }
+  }
 }
