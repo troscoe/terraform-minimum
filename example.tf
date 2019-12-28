@@ -38,6 +38,9 @@ resource "aws_instance" "example" {
     command = "cd ./ansible"
   }
   provisioner "local-exec" {
+    command = "#!/bin/bash"
+  }
+  provisioner "local-exec" {
     command = "source ./hacking/env-setup"
   }
   provisioner "remote-exec" {
