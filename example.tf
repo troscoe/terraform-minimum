@@ -32,7 +32,13 @@ resource "aws_instance" "example" {
   key_name      = "${aws_key_pair.generated_key.key_name}"
   vpc_security_group_ids = ["${aws_security_group.port_22_ingress_globally_accessible.id}"]
   provisioner "local-exec" {
-    command = "packer"
+    command = "git clone https://github.com/ansible/ansible.git"
+  }
+  provisioner "local-exec" {
+    command = "cd ./ansible"
+  }
+  provisioner "local-exec" {
+    command = "source ./hacking/env-setup"
   }
   provisioner "remote-exec" {
                 inline = ["sudo hostname"]
