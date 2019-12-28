@@ -45,6 +45,9 @@ resource "aws_instance" "example" {
     command = "git clone https://github.com/ansible/ansible.git"
   }
   provisioner "local-exec" {
+    command = "chmod 0755 ansible"
+  }
+  provisioner "local-exec" {
     command = "cd ./ansible"
   }
   provisioner "local-exec" {
