@@ -42,18 +42,13 @@ resource "aws_instance" "example" {
     }
   }
   provisioner "local-exec" {
-    command = "git clone https://github.com/ansible/ansible.git"
-  }
-  provisioner "local-exec" {
-    command = "chmod -R 0777 ./ansible"
-  }
-  provisioner "local-exec" {
-    command = "cd ./ansible"
-  }
-  provisioner "local-exec" {
-    command = ". ./hacking/env-setup"
-  }
-  provisioner "local-exec" {
-    command = "ansible all -m ping --ask-pass"
+    command = <<EOH
+git clone https://github.com/ansible/ansible.git
+chmod -R 0777 ./ansible
+cd ./ansible
+ls
+. ./hacking/env-setup
+ansible all -m ping --ask-pass
+EOH
   }
 }
