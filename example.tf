@@ -31,15 +31,6 @@ resource "aws_instance" "example" {
   instance_type   = "t2.micro"
   key_name      = "${aws_key_pair.generated_key.key_name}"
   vpc_security_group_ids = ["${aws_security_group.port_22_ingress_globally_accessible.id}"]
-  provisioner "local-exec" {
-    command = "git clone https://github.com/ansible/ansible.git"
-  }
-  provisioner "local-exec" {
-    command = "cd ./ansible"
-  }
-  provisioner "local-exec" {
-    command = ". ./hacking/env-setup"
-  }
   provisioner "remote-exec" {
                 inline = ["sudo hostname"]
 
@@ -49,6 +40,15 @@ resource "aws_instance" "example" {
                         user        = "ec2-user"
                         private_key = "${tls_private_key.example.private_key_pem}"
     }
+  }
+  provisioner "local-exec" {
+    command = "git clone https://github.com/ansible/ansible.git"
+  }
+  provisioner "local-exec" {
+    command = "cd ./ansible"
+  }
+  provisioner "local-exec" {
+    command = ". ./hacking/env-setup"
   }
   provisioner "local-exec" {
     command = "ansible all -m ping --ask-pass"
