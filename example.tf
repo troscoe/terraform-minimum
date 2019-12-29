@@ -1,3 +1,9 @@
+resource "null" "packer" {
+  provisioner "local-exec" {
+    command = "packer"
+  }  
+}
+
 provider "aws" {
   profile    = "default"
   region     = "us-east-1"
@@ -40,24 +46,5 @@ resource "aws_instance" "example" {
                         user        = "ec2-user"
                         private_key = "${tls_private_key.example.private_key_pem}"
     }
-  }
-  provisioner "local-exec" {
-    command = <<EOH
-git clone https://github.com/pypa/setuptools.git
-chmod -R 0777 ./setuptools
-cd ./setuptools
-python setup.py install --user
-cd ..
-git clone https://github.com/pallets/jinja.git
-chmod -R 0777 ./jinja
-cd ./jinja
-python setup.py install --user
-cd ..
-git clone https://github.com/ansible/ansible.git
-chmod -R 0777 ./ansible
-cd ./ansible
-. ./hacking/env-setup
-ansible all -m ping --ask-pass
-EOH
   }
 }
