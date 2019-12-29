@@ -1,4 +1,4 @@
-resource "null" "packer" {
+resource "null_resource" "packer" {
   provisioner "local-exec" {
     command = "packer"
   }  
