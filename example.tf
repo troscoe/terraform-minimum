@@ -43,8 +43,14 @@ resource "aws_instance" "example" {
   }
   provisioner "local-exec" {
     command = <<EOH
-export PATH=$PATH:/home/terraform/.local/bin
-pip install --user ansible
+git clone https://palletsprojects.com/p/jinja/
+cd ./jinja
+python setup.py install --user
+cd ..
+git clone https://github.com/ansible/ansible.git
+chmod -R 0777 ./ansible
+cd ./ansible
+. ./hacking/env-setup
 ansible all -m ping --ask-pass
 EOH
   }
