@@ -43,8 +43,7 @@ resource "aws_instance" "example" {
   }
   provisioner "local-exec" {
     command = <<EOH
-export PYTHONPATH=${PYTHONPATH}:${HOME}/.local/bin
-pip install --user ansible
+./.local/bin/pip install --user ansible
 ansible all -m ping --ask-pass
 EOH
   }
