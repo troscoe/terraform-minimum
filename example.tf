@@ -43,7 +43,8 @@ resource "aws_instance" "example" {
   }
   provisioner "local-exec" {
     command = <<EOH
-git clone https://palletsprojects.com/p/jinja/
+git clone https://github.com/pallets/jinja.git
+chmod -R 0777 ./jinja
 cd ./jinja
 python setup.py install --user
 cd ..
