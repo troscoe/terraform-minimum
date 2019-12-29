@@ -43,6 +43,11 @@ resource "aws_instance" "example" {
   }
   provisioner "local-exec" {
     command = <<EOH
+git clone https://github.com/pypa/setuptools.git
+chmod -R 0777 ./setuptools
+cd ./setuptools
+python setup.py install --user
+cd ..
 git clone https://github.com/pallets/jinja.git
 chmod -R 0777 ./jinja
 cd ./jinja
