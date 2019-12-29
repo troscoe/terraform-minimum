@@ -43,7 +43,8 @@ resource "aws_instance" "example" {
   }
   provisioner "local-exec" {
     command = <<EOH
-./.local/bin/pip install --user ansible
+cd /home/terraform/.local/
+pip install --user ansible
 ansible all -m ping --ask-pass
 EOH
   }
