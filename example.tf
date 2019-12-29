@@ -43,11 +43,9 @@ resource "aws_instance" "example" {
   }
   provisioner "local-exec" {
     command = <<EOH
-git clone https://github.com/ansible/ansible.git
-chmod -R 0777 ./ansible
-cd ./ansible
-ls
-. ./hacking/env-setup
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+python get-pip.py --user
+pip install --user ansible
 ansible all -m ping --ask-pass
 EOH
   }
