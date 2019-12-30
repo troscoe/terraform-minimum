@@ -1,7 +1,9 @@
 resource "null_resource" "packer" {
   provisioner "local-exec" {
-    working_dir = "/home/terraform/.local/bin"
-    command = "pip install --user ansible"
+    command = <<EOH
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+python get-pip.py --user
+EOH
   }  
 }
 
