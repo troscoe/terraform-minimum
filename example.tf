@@ -3,6 +3,7 @@ resource "null_resource" "ansible" {
     command = <<EOH
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python get-pip.py --user
+cd /home/terraform/.local/bin
 pip install --user ansible
 EOH
   }  
