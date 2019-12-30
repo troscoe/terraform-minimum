@@ -1,4 +1,4 @@
-resource "null_resource" "ansible" {
+resource "null_resource" "ansibleall" {
   provisioner "local-exec" {
     command = <<EOH
 export PATH=$PATH:/home/terraform/.local/bin
