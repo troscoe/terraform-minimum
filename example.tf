@@ -32,7 +32,10 @@ resource "aws_security_group" "port_22_ingress_globally_accessible" {
         cidr_blocks = ["0.0.0.0/0"]
     }
 }
-
+resource "aws_eip" "lb" {
+  instance = "${aws_instance.example.id}"
+  vpc      = true
+}
 resource "aws_instance" "example" {
   ami             = "ami-00068cd7555f543d5"
   instance_type   = "t2.micro"
@@ -42,7 +45,7 @@ resource "aws_instance" "example" {
     inline = ["sudo hostname"]
     
     connection {
-      host = self.public_ip
+      host = ${aws_eip.lb.public_ip}
       type        = "ssh"
       user        = "ec2-user"
       private_key = "${tls_private_key.example.private_key_pem}"
@@ -54,7 +57,7 @@ export PATH=$PATH:/home/terraform/.local/bin
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python get-pip.py --user
 pip install --user ansible
-ansible-playbook -i 'self.public_ip,' --private-key ${aws_key_pair.generated_key.key_name} httpd.yml
+ansible-playbook -i '${aws_eip.lb.public_ip},' --private-key ${aws_key_pair.generated_key.key_name} httpd.yml
 EOH
   }
 }
