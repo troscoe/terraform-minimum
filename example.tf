@@ -45,7 +45,7 @@ resource "aws_instance" "example" {
     inline = ["sudo hostname"]
     
     connection {
-      host = ${aws_eip.lb.public_ip}
+      host = "${aws_eip.lb.public_ip}"
       type        = "ssh"
       user        = "ec2-user"
       private_key = "${tls_private_key.example.private_key_pem}"
