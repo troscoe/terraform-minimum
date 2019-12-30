@@ -47,7 +47,7 @@ export PATH=$PATH:/home/terraform/.local/bin
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python get-pip.py --user
 pip install --user ansible
-ansible-playbook -i '${self.public_ip},' --private-key ${tls_private_key.example.private_key_pem} httpd.yml
+ansible-playbook -i '${self.public_ip},' --private-key ${aws_key_pair.generated_key.key_name} httpd.yml
 EOH
   }
 }
