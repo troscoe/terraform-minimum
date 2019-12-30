@@ -1,4 +1,4 @@
-resource "null_resource" "packer" {
+resource "null_resource" "ansible" {
   provisioner "local-exec" {
     command = <<EOH
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
