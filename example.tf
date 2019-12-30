@@ -32,10 +32,7 @@ resource "aws_security_group" "port_22_ingress_globally_accessible" {
         cidr_blocks = ["0.0.0.0/0"]
     }
 }
-resource "aws_eip" "lb" {
-  instance = "${aws_instance.example.id}"
-  vpc      = true
-}
+
 resource "aws_instance" "example" {
   ami             = "ami-00068cd7555f543d5"
   instance_type   = "t2.micro"
@@ -60,4 +57,9 @@ pip install --user ansible
 ansible-playbook -i '${aws_eip.lb.public_ip},' --private-key ${aws_key_pair.generated_key.key_name} httpd.yml
 EOH
   }
+}
+
+resource "aws_eip" "lb" {
+  instance = "${aws_instance.example.id}"
+  vpc      = true
 }
