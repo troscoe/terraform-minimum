@@ -1,6 +1,7 @@
 resource "null_resource" "packer" {
   provisioner "local-exec" {
-    command = "packer"
+    working_dir = "/home/terraform/.local/bin"
+    command = "pip install --user ansible"
   }  
 }
 
