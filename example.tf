@@ -1,4 +1,4 @@
-resource "null_resource" "ansibleall" {
+resource "null_resource" "ansible" {
   provisioner "local-exec" {
     command = <<EOH
 export PATH=$PATH:/home/terraform/.local/bin
@@ -44,13 +44,16 @@ resource "aws_instance" "example" {
   key_name      = "${aws_key_pair.generated_key.key_name}"
   vpc_security_group_ids = ["${aws_security_group.port_22_ingress_globally_accessible.id}"]
   provisioner "remote-exec" {
-                inline = ["sudo hostname"]
-
-                connection {
-                        host = self.public_ip
-                        type        = "ssh"
-                        user        = "ec2-user"
-                        private_key = "${tls_private_key.example.private_key_pem}"
+    inline = ["sudo hostname"]
+    
+    connection {
+      host = self.public_ip
+      type        = "ssh"
+      user        = "ec2-user"
+      private_key = "${tls_private_key.example.private_key_pem}"
     }
+  }
+  provisioner "local-exec" {
+    command = "ansible-playbook -i '${self.public_ip},' --private-key ${tls_private_key.example.private_key_pem} httpd.yml"
   }
 }
