@@ -4,6 +4,10 @@ provider "aws" {
 }
 
 variable "key_name" {}
+variable "private_key_path" {
+  description = "Path to the private SSH key, used to access the instance."
+  default     = "~/.ssh/id_dsa"
+}
 
 resource "tls_private_key" "example" {
   algorithm = "RSA"
@@ -60,7 +64,7 @@ export PATH=$PATH:/home/terraform/.local/bin
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python get-pip.py --user
 pip install --user ansible
-ansible-playbook -i '${self.public_ip},' --private-key ${aws_key_pair.generated_key.key_name} httpd.yml
+ansible-playbook -i '${self.public_ip},' --private-key ${var.private_key_path} httpd.yml
 EOH
   }
 }
