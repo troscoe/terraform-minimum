@@ -42,7 +42,7 @@ resource "aws_instance" "example" {
     inline = ["sudo hostname"]
     
     connection {
-      host = "${aws_eip.lb.public_ip}"
+      host = "${aws_instance.example.0.public_ip}"
       type        = "ssh"
       user        = "ec2-user"
       private_key = "${tls_private_key.example.private_key_pem}"
@@ -54,7 +54,7 @@ export PATH=$PATH:/home/terraform/.local/bin
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python get-pip.py --user
 pip install --user ansible
-ansible-playbook -i '${aws_eip.lb.public_ip},' --private-key ${aws_key_pair.generated_key.key_name} httpd.yml
+ansible-playbook -i '${aws_instance.example.0.public_ip},' --private-key ${aws_key_pair.generated_key.key_name} httpd.yml
 EOH
   }
 }
