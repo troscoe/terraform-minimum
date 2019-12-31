@@ -65,6 +65,8 @@ curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python get-pip.py --user
 pip install --user ansible
 ansible-playbook -i '${self.public_ip},' --private-key ${var.private_key_path} httpd.yml
+cd ~/.ssh/id_dsa
+ls
 EOH
   }
 }
