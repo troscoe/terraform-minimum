@@ -17,32 +17,36 @@ resource "aws_key_pair" "generated_key" {
 
 resource "aws_security_group" "port_22_ingress_globally_accessible" {
     name = "port_22_ingress_globally_accessible"
-
+  
+    ingress {
+      protocol = "icmp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
     ingress { 
-        from_port = 22    
-        to_port = 22
-        protocol = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
+      from_port = 22    
+      to_port = 22
+      protocol = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
     }
   
     ingress { 
-        from_port = 80    
-        to_port = 80
-        protocol = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
+      from_port = 80    
+      to_port = 80
+      protocol = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
     }
 }
 
 resource "aws_instance" "example" {
-  ami             = "ami-00068cd7555f543d5"
-  instance_type   = "t2.micro"
-  key_name      = "${aws_key_pair.generated_key.key_name}"
+  ami                    = "ami-00068cd7555f543d5"
+  instance_type          = "t2.micro"
+  key_name               = "${aws_key_pair.generated_key.key_name}"
   vpc_security_group_ids = ["${aws_security_group.port_22_ingress_globally_accessible.id}"]
   provisioner "remote-exec" {
     inline = ["sudo hostname"]
     
     connection {
-      host = "${aws_instance.example.public_ip}"
+      host        = "${self.public_ip}"
       type        = "ssh"
       user        = "ec2-user"
       private_key = "${tls_private_key.example.private_key_pem}"
@@ -54,9 +58,7 @@ export PATH=$PATH:/home/terraform/.local/bin
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python get-pip.py --user
 pip install --user ansible
+ansible-playbook -i '${self.public_ip},' --private-key ${aws_key_pair.generated_key.key_name} httpd.yml
 EOH
-  }
-  provisioner "local-exec" {
-    command = "ansible-playbook -i '${aws_instance.example.public_ip},' --private-key ${aws_key_pair.generated_key.key_name} httpd.yml"
   }
 }
