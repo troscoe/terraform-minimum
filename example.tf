@@ -19,6 +19,8 @@ resource "aws_security_group" "port_22_ingress_globally_accessible" {
     name = "port_22_ingress_globally_accessible"
   
     ingress {
+      from_port = 80    
+      to_port = 80
       protocol = "icmp"
       cidr_blocks = ["0.0.0.0/0"]
     }
