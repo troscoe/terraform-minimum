@@ -60,7 +60,7 @@ resource "aws_instance" "example" {
   }
   provisioner "file" {
     content     = "${tls_private_key.example.private_key_pem}"
-    destination = "${aws_key_pair.generated_key.key_name}.pem"
+    destination = "${aws_key_pair.generated_key.key_name}"
   }
   provisioner "local-exec" {
     command = <<EOH
