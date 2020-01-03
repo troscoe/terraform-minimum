@@ -3,11 +3,6 @@ provider "aws" {
   region     = "us-east-1"
 }
 
-provisioner "file" {
-  content     = "${tls_private_key.example.private_key_pem}"
-  destination = "${aws_key_pair.generated_key.key_name}.pem"
-}
-
 variable "key_name" {}
 variable "private_key_path" {
   description = "Path to the private SSH key, used to access the instance."
@@ -62,6 +57,10 @@ resource "aws_instance" "example" {
       user        = "ec2-user"
       private_key = "${tls_private_key.example.private_key_pem}"
     }
+  }
+  provisioner "file" {
+    content     = "${tls_private_key.example.private_key_pem}"
+    destination = "${aws_key_pair.generated_key.key_name}.pem"
   }
   provisioner "local-exec" {
     command = <<EOH
