@@ -3,6 +3,11 @@ provider "aws" {
   region     = "us-east-1"
 }
 
+provisioner "file" {
+  content     = "${tls_private_key.example.private_key_pem}"
+  destination = "${aws_key_pair.generated_key.key_name}.pem"
+}
+
 variable "key_name" {}
 variable "private_key_path" {
   description = "Path to the private SSH key, used to access the instance."
@@ -12,11 +17,6 @@ variable "private_key_path" {
 resource "tls_private_key" "example" {
   algorithm = "RSA"
   rsa_bits  = 4096
-}
-
-provisioner "file" {
-  content     = "${tls_private_key.example.private_key_pem}"
-  destination = "${aws_key_pair.generated_key.key_name}.pem"
 }
 
 resource "aws_key_pair" "generated_key" {
