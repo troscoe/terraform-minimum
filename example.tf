@@ -22,12 +22,13 @@ resource "aws_key_pair" "generated_key" {
 resource "aws_security_group" "port_22_ingress_globally_accessible" {
     name = "port_22_ingress_globally_accessible"
   
-    ingress {
-      from_port = 0    
-      to_port = 43
-      protocol = "icmp"
+    egress {
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
       cidr_blocks = ["0.0.0.0/0"]
     }
+  
     ingress { 
       from_port = 22    
       to_port = 22
