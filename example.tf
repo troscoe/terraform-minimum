@@ -73,7 +73,6 @@ ${tls_private_key.example.private_key_pem}
 EOL
 chmod 400 ~/.ssh/${aws_key_pair.generated_key.key_name}.pem
 ansible-playbook -i '${self.public_ip},' --private-key ~/.ssh/${aws_key_pair.generated_key.key_name}.pem --user ec2-user httpd.yml
-cat ~/${aws_key_pair.generated_key.key_name}.pem
 EOH
   }
 }
