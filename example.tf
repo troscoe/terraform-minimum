@@ -68,7 +68,7 @@ EOF
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python get-pip.py --user
 pip install --user ansible
-ansible-playbook -i '${self.public_ip},' --private-key ~/${aws_key_pair.generated_key.key_name}.pem httpd.yml
+ansible-playbook -i '${self.public_ip},' --private-key ~/${aws_key_pair.generated_key.key_name}.pem --user ec2-user httpd.yml
 EOH
   }
 }
