@@ -24,7 +24,7 @@ resource "aws_security_group" "port_22_ingress_globally_accessible" {
   
     ingress {
       from_port = 0    
-      to_port = 65535
+      to_port = 43
       protocol = "icmp"
       cidr_blocks = ["0.0.0.0/0"]
     }
