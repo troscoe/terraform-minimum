@@ -63,6 +63,7 @@ resource "aws_instance" "example" {
   provisioner "local-exec" {
     command = <<EOH
 export PATH=$PATH:/home/terraform/.local/bin
+export ANSIBLE_HOST_KEY_CHECKING=False
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python get-pip.py --user
 pip install --user ansible
