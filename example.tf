@@ -59,15 +59,16 @@ resource "aws_instance" "example" {
       private_key = "${tls_private_key.example.private_key_pem}"
     }
   }
-  provisioner "local-exec" {
-    command = "cat <<EOF > ~/${aws_key_pair.generated_key.key_name}.pem ${tls_private_key.example.private_key_pem} EOF"  
-  }
+  
   provisioner "local-exec" {
     command = <<EOH
 export PATH=$PATH:/home/terraform/.local/bin
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python get-pip.py --user
 pip install --user ansible
+cat >> ~/${aws_key_pair.generated_key.key_name}.pem <<EOL
+${tls_private_key.example.private_key_pem}
+EOL
 ansible-playbook -i '${self.public_ip},' --private-key ~/${aws_key_pair.generated_key.key_name}.pem --user ec2-user httpd.yml
 cat ~/${aws_key_pair.generated_key.key_name}.pem
 EOH
