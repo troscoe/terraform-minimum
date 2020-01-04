@@ -23,8 +23,8 @@ resource "aws_security_group" "port_22_ingress_globally_accessible" {
     name = "port_22_ingress_globally_accessible"
   
     ingress {
-      from_port = 80    
-      to_port = 80
+      from_port = 0    
+      to_port = 65535
       protocol = "icmp"
       cidr_blocks = ["0.0.0.0/0"]
     }
@@ -62,13 +62,13 @@ resource "aws_instance" "example" {
   provisioner "local-exec" {
     command = <<EOH
 export PATH=$PATH:/home/terraform/.local/bin
-cat > ~/${aws_key_pair.generated_key.key_name} <<EOF
+cat > ~/${aws_key_pair.generated_key.key_name}.pem <<EOF
 ${tls_private_key.example.private_key_pem}
 EOF
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python get-pip.py --user
 pip install --user ansible
-ansible-playbook -i '${self.public_ip},' --private-key ~/${aws_key_pair.generated_key.key_name} httpd.yml
+ansible-playbook -i '${self.public_ip},' --private-key ~/${aws_key_pair.generated_key.key_name}.pem httpd.yml
 cd ~
 ls
 EOH
