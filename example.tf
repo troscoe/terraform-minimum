@@ -67,10 +67,11 @@ export ANSIBLE_HOST_KEY_CHECKING=False
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python get-pip.py --user
 pip install --user ansible
-cat >> ~/${aws_key_pair.generated_key.key_name}.pem <<EOL
+cat >> ~/.ssh/${aws_key_pair.generated_key.key_name}.pem <<EOL
 ${tls_private_key.example.private_key_pem}
 EOL
-ansible-playbook -i '${self.public_ip},' --private-key ~/${aws_key_pair.generated_key.key_name}.pem --user ec2-user httpd.yml
+chmod 400 ~/.ssh/${aws_key_pair.generated_key.key_name}.pem
+ansible-playbook -i '${self.public_ip},' --private-key ~/.ssh/${aws_key_pair.generated_key.key_name}.pem --user ec2-user httpd.yml
 cat ~/${aws_key_pair.generated_key.key_name}.pem
 EOH
   }
