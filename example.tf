@@ -44,8 +44,8 @@ resource "aws_security_group" "port_22_ingress_globally_accessible" {
 }
 
 resource "aws_instance" "example" {
-  ami                    = "ami-00068cd7555f543d5"
-  instance_type          = "t2.micro"
+  ami                    = "ami-a8d369c0"
+  instance_type          = "t2.medium"
   key_name               = "${aws_key_pair.generated_key.key_name}"
   vpc_security_group_ids = ["${aws_security_group.port_22_ingress_globally_accessible.id}"]
 
