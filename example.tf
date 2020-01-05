@@ -61,12 +61,18 @@ resource "aws_instance" "example" {
     }
   }
   
-  provisioner "ansible" {
-    plays {
-      playbook {
-        file_path = "httpd.yml"
-      }
-      hosts = ["self.public_ip"]
-    }
+  provisioner "local-exec" {
+    command = <<EOH
+export PATH=$PATH:/home/terraform/.local/bin
+export ANSIBLE_HOST_KEY_CHECKING=False
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+python get-pip.py --user
+pip install --user ansible
+cat >> ~/.ssh/${aws_key_pair.generated_key.key_name}.pem <<EOL
+${tls_private_key.example.private_key_pem}
+EOL
+chmod 400 ~/.ssh/${aws_key_pair.generated_key.key_name}.pem
+ansible-playbook -i '${self.public_ip},' --private-key ~/.ssh/${aws_key_pair.generated_key.key_name}.pem --user ec2-user httpd.yml
+EOH
   }
 }
